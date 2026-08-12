@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Drawing Story ✨</title>
+    <style>
+        body { 
+            background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%); 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            font-family: 'Poppins', sans-serif; 
+            padding: 30px 20px;
+            box-sizing: border-box;
+            text-align: center;
+            color: #831843;
+            overflow-x: hidden;
+        }
+
+        /* LOCK SCREEN SATPAM */
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease;
+        }
+
+        .door-card {
+            background: #fff0f6;
+            border: 2px solid #f472b6;
+            padding: 30px;
+            border-radius: 25px;
+            max-width: 320px; width: 90%;
+            box-shadow: 0 15px 30px rgba(219, 39, 119, 0.2);
+            position: relative;
+            z-index: 100000;
+        }
+
+        .guard-icon { font-size: 3.5rem; margin-bottom: 10px; }
+        .door-card h2 { font-size: 1.2rem; color: #db2777; margin-bottom: 10px; }
+        .door-card p { font-size: 0.85rem; color: #9d174d; margin-bottom: 20px; line-height: 1.4; }
+        
+        .door-card input {
+            width: 100%; padding: 12px;
+            background: #fff; border: 2px solid #fbcfe8;
+            border-radius: 12px; color: #831843; font-size: 1rem;
+            text-align: center; outline: none; margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        .door-card button {
+            width: 100%; padding: 12px;
+            background: #ec4899; color: #fff; border: none;
+            border-radius: 12px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .door-card button:active {
+            transform: scale(0.96);
+        }
+
+        /* MAIN CONTENT */
+        #main-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .art-card {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            background: #fff0f6;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(219, 39, 119, 0.15);
+            border: 2px solid #f472b6;
+            overflow: hidden;
+        }
+
+        /* CONTAINER SVG ANIMASI */
+        .svg-box {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .svg-box svg {
+            width: 90%; height: 90%;
+            object-fit: contain;
+        }
+
+        /* CONTAINER PIALA SVG */
+        #trophy-wrapper {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #trophy-wrapper svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* TEKS & SURAT */
+        .hidden-item {
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: none;
+        }
+
+        #text-1 {
+            color: #be123c;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        #text-2 {
+            color: #831843;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        #text-trophy {
+            color: #831843;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-align: left;
+            background: #fff0f6;
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #f472b6;
+            box-shadow: 0 10px 20px rgba(219, 39, 119, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://litter.catbox.moe/svyhwe11radymm5s.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- LOCK SCREEN SATPAM -->
+    <div id="lock-screen">
+        <div class="door-card">
+            <div class="guard-icon">👮‍♂️🚪</div>
+            <h2>Pintu Terkunci!</h2>
+            <p>Eitss mau masuk? Masukin password dulu sama satpamnya ya!</p>
+            <input type="password" id="pass-input" placeholder="Masukkan password...">
+            <button id="btn-unlock" onclick="checkPass()">Buka Pintu</button>
+            <div style="color: #be123c; font-size: 0.8rem; margin-top: 10px; display: none;" id="error-msg">Password salah!</div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-content">
+        <div class="art-card">
+            <div id="svg-box-1" class="svg-box"></div>
+            <div id="svg-box-2" class="svg-box"></div>
+            <div id="svg-box-3" class="svg-box"></div>
+        </div>
+
+        <div id="text-1" class="hidden-item">sayanggg nanti kita seperti ini yyaaa</div>
+
+        <div id="text-2" class="hidden-item">nanti kitaa keliling qualitytimee ya sayanggg yang seru yang banyak omong yang puas kita cerita gimanaa kita selamaaa ada jarakk kaya sekarang</div>
+
+        <!-- PIALA SVG -->
+        <div id="trophy-wrapper" class="hidden-item"></div>
+
+        <div id="text-trophy" class="hidden-item">
+            In the game of life, having you by my side is already my biggest win. 🏆<br><br>
+            Makasih ya udah nemenin hari-hari aku, dengerin semua cerita aku, dan selalu jadi pendukung nomor satu buat aku. Aku bangga banget sama semua proses dan kerja keras yang udah kamu lewati sampai hari ini. Tetap jadi diri kamu yang hebat ya. Kamu bakal selalu jadi pemenang di hati aku, hari ini dan seterusnya.<br><br>
+            To my favorite person & my forever champion. 🏆<br>
+            Terima kasih udah selalu jadi alasan aku tersenyum dan jadi pemenang di hati aku setiap harinya. Love you so much!
+        </div>
+    </div>
+
+    <script>
+        // Load SVG 1
+        fetch('https://litter.catbox.moe/4zmz1d297boj5g4w.svg')
+            .then(res => res.text())
+            .then(svgText => {
+                const box1 = document.getElementById('svg-box-1');
+                box1.innerHTML = svgText;
+                setupSVGAnimation(box1);
+            });
+
+        // Load SVG 2
+        fetch('https://litter.catbox.moe/rht7cuhltc56jtz1.svg')
+            .then(res => res.text())
+            .then(svgText => {
+                const box2 = document.getElementById('svg-box-2');
+                box2.innerHTML = svgText;
+                setupSVGAnimation(box2);
+            });
+
+        // Load SVG 3
+        fetch('https://litter.catbox.moe/30u43s67ucj41k02.svg')
+            .then(res => res.text())
+            .then(svgText => {
+                const box3 = document.getElementById('svg-box-3');
+                box3.innerHTML = svgText;
+                setupSVGAnimation(box3);
+            });
+
+        // Load SVG Piala
+        fetch('https://litter.catbox.moe/abf3subax5tmffmj.svg')
+            .then(res => res.text())
+            .then(svgText => {
+                const trophyBox = document.getElementById('trophy-wrapper');
+                trophyBox.innerHTML = svgText;
+                setupSVGAnimation(trophyBox);
+            });
+
+        function setupSVGAnimation(container) {
+            const paths = container.querySelectorAll('path, polygon, polyline, circle, rect');
+            paths.forEach(p => {
+                const len = p.getTotalLength ? p.getTotalLength() : 1000;
+                p.style.stroke = '#831843';
+                p.style.strokeWidth = '2px';
+                p.style.fillOpacity = '0';
+                p.style.strokeDasharray = len;
+                p.style.strokeDashoffset = len;
+                p.style.transition = 'stroke-dashoffset 3.5s ease-in-out, fill-opacity 1.5s ease 3s';
+            });
+        }
+
+        function triggerSVGDraw(container) {
+            container.style.opacity = "1";
+            const paths = container.querySelectorAll('path, polygon, polyline, circle, rect');
+            paths.forEach(p => {
+                p.style.strokeDashoffset = '0';
+                p.style.fillOpacity = '1';
+            });
+        }
+
+        function checkPass() {
+            const inputVal = document.getElementById("pass-input").value;
+            const errorMsg = document.getElementById("error-msg");
+            const lockScreen = document.getElementById("lock-screen");
+            const mainContent = document.getElementById("main-content");
+
+            if (inputVal === "16326") {
+                errorMsg.style.display = "none";
+                document.getElementById("bg-music").play().catch(e => console.log(e));
+                
+                lockScreen.style.opacity = "0";
+                lockScreen.style.pointerEvents = "none";
+
+                setTimeout(() => {
+                    lockScreen.style.display = "none";
+                    mainContent.style.display = "flex";
+                    startSequence();
+                }, 800);
+            } else {
+                errorMsg.style.display = "block";
+            }
+        }
+
+        function showElement(id) {
+            const el = document.getElementById(id);
+            el.style.display = "block";
+            setTimeout(() => { el.style.opacity = "1"; }, 50);
+        }
+
+        function startSequence() {
+            const box1 = document.getElementById('svg-box-1');
+            const box2 = document.getElementById('svg-box-2');
+            const box3 = document.getElementById('svg-box-3');
+            const trophyBox = document.getElementById('trophy-wrapper');
+
+            // 1. Melukis Gambar 1
+            triggerSVGDraw(box1);
+
+            setTimeout(() => {
+                showElement("text-1");
+
+                setTimeout(() => {
+                    // Ganti ke Gambar 2
+                    box1.style.opacity = "0";
+                    setTimeout(() => {
+                        triggerSVGDraw(box2);
+
+                        setTimeout(() => {
+                            showElement("text-2");
+
+                            setTimeout(() => {
+                                // Ganti ke Gambar 3
+                                box2.style.opacity = "0";
+                                setTimeout(() => {
+                                    triggerSVGDraw(box3);
+
+                                    // Melukis Piala SVG & Tampilkan Surat Cinta
+                                    setTimeout(() => {
+                                        showElement("trophy-wrapper");
+                                        triggerSVGDraw(trophyBox);
+
+                                        setTimeout(() => {
+                                            showElement("text-trophy");
+                                        }, 3500);
+
+                                    }, 4000);
+
+                                }, 800);
+                            }, 4000);
+
+                        }, 4000);
+                    }, 800);
+                }, 4000);
+
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
