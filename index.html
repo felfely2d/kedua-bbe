@@ -23,7 +23,7 @@
         /* MUSIC CONTROL BUTTON */
         .music-btn { position: fixed; top: 15px; right: 15px; z-index: 1000; background: #db2777; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
-        /* PRE-SCRAPBOOK STYLE */
+        /* PRE-SCRAPBOOK STYLE (4 Slide Harapan) */
         .pre-container { display: none; width: 100%; max-width: 360px; flex-direction: column; align-items: center; margin-top: 20px; text-align: center; }
         
         /* SCRAPBOOK BOOK STYLE */
@@ -49,11 +49,12 @@
 
     <!-- AUDIO FILES -->
     <audio id="bg-music" loop preload="auto">
-        <source src="https://litter.catbox.moe/svyhwe11radymm5s.mp3" type="audio/mpeg">
+        <source src="https://litter.catbox.moe/i16kye9n0ixr6a5d.mp3" type="audio/mpeg">
     </audio>
     <audio id="sound-notif" preload="auto"><source src="https://litter.catbox.moe/k3b7y2.mp3" type="audio/mpeg"></audio>
     <audio id="sound-typing" preload="auto"><source src="https://litter.catbox.moe/s92m4s.mp3" type="audio/mpeg"></audio>
 
+    <!-- 1. PINTU & PIN -->
     <div id="door-screen" class="screen">
         <div class="card">
             <div style="font-size: 4rem;">🚪</div>
@@ -71,9 +72,10 @@
         </div>
     </div>
 
+    <!-- 2. SIMULASI CHAT WHATSAPP -->
     <div id="chat-container"></div>
 
-    <!-- PRE-SCRAPBOOK 1 -->
+    <!-- 3. 4 SLIDE HARAPAN (Ngobrol, Becanda, Diyakinin, Hug) -->
     <div id="pre-1" class="pre-container">
         <h2 style="color: #831843; margin-bottom: 20px;">SAYANGG NANTI KITA SEPERTI INI YA</h2>
         <div class="polaroid" style="transform: rotate(0deg); width: 90%;">
@@ -83,7 +85,6 @@
         <button class="btn-next" onclick="openPre2()">Lanjut... ✨</button>
     </div>
 
-    <!-- PRE-SCRAPBOOK 2 -->
     <div id="pre-2" class="pre-container">
         <h2 style="color: #831843; margin-bottom: 20px;">DAN JUGA...</h2>
         <div class="polaroid" style="transform: rotate(0deg); width: 90%;">
@@ -93,7 +94,6 @@
         <button class="btn-next" onclick="openPre3()">Lanjut... ✨</button>
     </div>
 
-    <!-- PRE-SCRAPBOOK 3 -->
     <div id="pre-3" class="pre-container">
         <h2 style="color: #831843; margin-bottom: 20px;">DAN SATU LAGI...</h2>
         <div class="polaroid" style="transform: rotate(0deg); width: 90%;">
@@ -103,7 +103,6 @@
         <button class="btn-next" onclick="openPre4()">Lanjut... ✨</button>
     </div>
     
-    <!-- PRE-SCRAPBOOK 4 -->
     <div id="pre-4" class="pre-container">
         <h2 style="color: #831843; margin-bottom: 20px;">DAN YANG PALING PENTING...</h2>
         <div class="polaroid" style="transform: rotate(0deg); width: 90%;">
@@ -113,7 +112,7 @@
         <button class="btn-next" onclick="openBook1()">Lanjut Ke Scrapbook 📖</button>
     </div>
 
-    <!-- BOOK: KENANGAN -->
+    <!-- 4. SCRAPBOOK 8 FOTO -->
     <div id="book-container-1" class="book-container">
         <h2 style="color: #831843; margin-bottom: 10px; text-align: center;">INI SCRAPBOOK FOTO PACAR AKU YANG PALING GANTENG 📖✨</h2>
         <div class="book-wrapper" id="book-1"></div>
@@ -125,7 +124,7 @@
         <button id="btn-longtext-1" class="btn-next" style="display:none; margin-top:20px;" onclick="openLongtext1()">Baca Longtext Buat Kamu 💌</button>
     </div>
 
-    <!-- LONGTEXT 1 (TENTANG DIA) -->
+    <!-- 5. LONGTEXT PERTAMA (Tentang dia/first impression) -->
     <div id="longtext-container-1" class="text-container">
         <div class="long-text">
             Haii sayanggggg ini dia cowoo aku yg palingg ganteng seduniaaa!! 👑❤️<br><br>
@@ -137,10 +136,10 @@
         </div>
     </div>
 
-    <!-- LONGTEXT 2 (SURAT DARI AKU - LAST) -->
+    <!-- 6. LONGTEXT TERAKHIR (Surat "A Letter for My Favorite Person 🏆❤️") -->
     <div id="longtext-container-2" class="text-container">
-        <h2 style="color: #831843; text-align: center; margin-bottom: 10px;">A Letter for My Favorite Person 🏆❤️</h2>
         <div class="long-text">
+            <h2 style="color: #831843; text-align: center; margin-top: 0; margin-bottom: 15px;">A Letter for My Favorite Person 🏆❤️</h2>
             Meskipun sekarang kita terhalang jarak dan cuma bisa ngobrol lewat layar, jujur rasa sayangnya tetap hangat dan berasa dekat banget. Suara kamu lewat call atau voice note selalu berhasil bikin hari-hariku tenang, balikin mood-ku yang lagi hancur, dan bikin aku ngerasa paling bahagia.<br><br>
             Aku suka banget cara kamu treat aku. Kamu itu pendengar terbaik yang enggak pernah bosan dengerin cerita random-ku, selalu ingat detail kecil yang bahkan aku sendiri udah lupa, dan selalu sabar nemenin virtual date, main bareng, sampai ngobrol bercanda sampai ngantuk. Beneran deh, suara ketawa kamu di telepon itu salah satu suara paling indah di dunia buat aku!<br><br>
             Kepedulian dan perhatian kamu yang tulus—bahkan di sela-sela kesibukan kamu—bikin aku percaya sepenuhnya dan merasa aman banget sama kamu.<br><br>
