@@ -16,9 +16,12 @@
         .bubble.girl { background: white; color: #831843; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .bubble.boy { background: #f472b6; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
         .sender-name { font-size: 0.75rem; margin-bottom: 4px; color: #831843; font-weight: bold; }
-        .long-text { background: #fff; border: 2px solid #f472b6; padding: 25px; border-radius: 20px; margin-top: 20px; text-align: left; color: #831843; font-weight: 500; font-size: 0.95rem; opacity: 0; transition: opacity 1.5s; line-height: 1.6; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .long-text { background: #fff; border: 2px solid #f472b6; padding: 25px; border-radius: 20px; margin-top: 20px; text-align: left; color: #831843; font-weight: 500; font-size: 0.95rem; opacity: 1; line-height: 1.6; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .btn-next { background: #db2777; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 1rem; font-weight: bold; cursor: pointer; margin: 20px auto; display: block; box-shadow: 0 4px 10px rgba(219,39,119,0.3); transition: transform 0.2s; }
         .btn-next:active { transform: scale(0.95); }
+
+        /* MUSIC CONTROL BUTTON */
+        .music-btn { position: fixed; top: 15px; right: 15px; z-index: 1000; background: #db2777; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
         /* PRE-SCRAPBOOK STYLE */
         .pre-container { display: none; width: 100%; max-width: 360px; flex-direction: column; align-items: center; margin-top: 20px; text-align: center; }
@@ -35,21 +38,27 @@
         .nav-btn { background: #f472b6; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         .page-num { font-weight: bold; color: #831843; }
 
-        #final-text-container { display: none; width: 100%; max-width: 450px; padding: 10px; box-sizing: border-box; flex-direction: column; align-items: center; margin-top: 20px; }
+        .text-container { display: none; width: 100%; max-width: 450px; padding: 10px; box-sizing: border-box; flex-direction: column; align-items: center; margin-top: 20px; }
         @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop><source src="https://litter.catbox.moe/svyhwe11radymm5s.mp3" type="audio/mpeg"></audio>
-    <audio id="sound-notif"><source src="https://litter.catbox.moe/k3b7y2.mp3" type="audio/mpeg"></audio>
-    <audio id="sound-typing"><source src="https://litter.catbox.moe/s92m4s.mp3" type="audio/mpeg"></audio>
+    <!-- TOMBOL MUSIK MANUAL -->
+    <button class="music-btn" onclick="toggleMusic()" id="music-control">🎵 Play Music</button>
+
+    <!-- AUDIO FILES -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://litter.catbox.moe/svyhwe11radymm5s.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sound-notif" preload="auto"><source src="https://litter.catbox.moe/k3b7y2.mp3" type="audio/mpeg"></audio>
+    <audio id="sound-typing" preload="auto"><source src="https://litter.catbox.moe/s92m4s.mp3" type="audio/mpeg"></audio>
 
     <div id="door-screen" class="screen">
         <div class="card">
             <div style="font-size: 4rem;">🚪</div>
             <p>Ketuk pintu dulu sayang...</p>
-            <button onclick="nextStep('guard-screen')" style="padding:10px 25px; border-radius:20px; border:none; background:#db2777; color:white; font-weight:bold; cursor:pointer;">Tok Tok!</button>
+            <button onclick="startApp()" style="padding:10px 25px; border-radius:20px; border:none; background:#db2777; color:white; font-weight:bold; cursor:pointer;">Tok Tok!</button>
         </div>
     </div>
 
@@ -104,41 +113,74 @@
         <button class="btn-next" onclick="openBook1()">Lanjut Ke Scrapbook 📖</button>
     </div>
 
-    <!-- BOOK 1: KENANGAN -->
+    <!-- BOOK: KENANGAN -->
     <div id="book-container-1" class="book-container">
         <h2 style="color: #831843; margin-bottom: 10px; text-align: center;">INI SCRAPBOOK FOTO PACAR AKU YANG PALING GANTENG 📖✨</h2>
         <div class="book-wrapper" id="book-1"></div>
         <div class="page-controls">
-            <button class="nav-btn" onclick="prevPage('book-1', 0)">❮</button>
+            <button class="nav-btn" onclick="prevPage()">❮</button>
             <span class="page-num" id="page-num-1">1 / 8</span>
-            <button class="nav-btn" onclick="nextPage('book-1', 0)">❯</button>
+            <button class="nav-btn" onclick="nextPage()">❯</button>
         </div>
-        <button id="btn-final-1" class="btn-next" style="display:none; margin-top:20px;" onclick="openFinalText()">Pesan Terakhir Buat Kamu 💌</button>
+        <button id="btn-longtext-1" class="btn-next" style="display:none; margin-top:20px;" onclick="openLongtext1()">Baca Longtext Buat Kamu 💌</button>
     </div>
 
-    <div id="final-text-container">
-        <div class="long-text" style="opacity: 1;">
+    <!-- LONGTEXT 1 (TENTANG DIA) -->
+    <div id="longtext-container-1" class="text-container">
+        <div class="long-text">
             Haii sayanggggg ini dia cowoo aku yg palingg ganteng seduniaaa!! 👑❤️<br><br>
             Kalau di inget inget momen kita ketemu itu lucuuu yaaa and first impression aku ke kamu tuh bener bener kaya "lucuu bangett inii, ganteng nya pas manis nya dapet bangett" dulu aku mikirnya cuma sekedar cowo yang sekedar kenal terus asinggg but aku kekeh ngejadiin dia tawanan ku sampai sekarang ternyata kitaa selucu ituuu.<br><br>
             Kadangg berantem after itu kaya tiba tiba ga ada masalah bisa ketawa lepas, hug lama lamaaa bahkn ngebahas hal hal yg mungkin menurut orang lain itu ga masuk logikaa butt karna logika kitaa udh nyatu sama seperti hati kita jadii apapun itu pasti seruuuu.<br><br>
             Jujur yaaa aku makin sayanggg and cintaaa bangettt bukan cuma karna ganteng tapi karna sifat kamu setelah kita makin kenal, kamu yg asik di ajak ngobrol, humoris dan selalu punya 1001 cara unik buat bikin aku happy.<br><br>
             <strong>First impression-nya udah dapet nilai 100, tapi setelah kenal lebih dalam, nilainya jadi tak terhingga! Infinity/10! ♾️💖✨</strong>
-            <button class="btn-next" onclick="openWishlist()">Lanjut ke Wishlist Kita 🌟</button>
+            <button class="btn-next" onclick="openLongtext2()">Ada Surat Satu Lagi... ✉️✨</button>
         </div>
     </div>
 
-    <!-- BOOK 2: WISHLIST -->
-    <div id="book-container-2" class="book-container">
-        <h2 style="color: #831843; margin-bottom: 10px; text-align: center;">OUR FUTURE WISHLIST 🗺️✨</h2>
-        <div class="book-wrapper" id="book-2"></div>
-        <div class="page-controls">
-            <button class="nav-btn" onclick="prevPage('book-2', 1)">❮</button>
-            <span class="page-num" id="page-num-2">1 / 4</span>
-            <button class="nav-btn" onclick="nextPage('book-2', 1)">❯</button>
+    <!-- LONGTEXT 2 (SURAT DARI AKU - LAST) -->
+    <div id="longtext-container-2" class="text-container">
+        <h2 style="color: #831843; text-align: center; margin-bottom: 10px;">A Letter for My Favorite Person 🏆❤️</h2>
+        <div class="long-text">
+            Meskipun sekarang kita terhalang jarak dan cuma bisa ngobrol lewat layar, jujur rasa sayangnya tetap hangat dan berasa dekat banget. Suara kamu lewat call atau voice note selalu berhasil bikin hari-hariku tenang, balikin mood-ku yang lagi hancur, dan bikin aku ngerasa paling bahagia.<br><br>
+            Aku suka banget cara kamu treat aku. Kamu itu pendengar terbaik yang enggak pernah bosan dengerin cerita random-ku, selalu ingat detail kecil yang bahkan aku sendiri udah lupa, dan selalu sabar nemenin virtual date, main bareng, sampai ngobrol bercanda sampai ngantuk. Beneran deh, suara ketawa kamu di telepon itu salah satu suara paling indah di dunia buat aku!<br><br>
+            Kepedulian dan perhatian kamu yang tulus—bahkan di sela-sela kesibukan kamu—bikin aku percaya sepenuhnya dan merasa aman banget sama kamu.<br><br>
+            <strong>AND I WISH...</strong><br>
+            Jarak ini terus ngajarin kita arti setia, sabar, dan saling percaya. Semoga jarak cuma jadi angka, karena perasaan kita jauh lebih kuat dari itu. Setiap tantangan di hubungan virtual ini justru makin bikin aku yakin kalau kamu adalah orang yang tepat, rumah tempat aku pulang, dan enggak ada keraguan sedikit pun di hati aku buat terus milih kamu setiap hari.<br><br>
+            Gak sabar buat melalukan semua rencana seru kita nanti pas saatnya "WhatsApp" ini berubah jadi real life. And honestly, we are so cool and fun together! Ini baru sebagian kecil hal yang aku suka dari kamu, masih banyak banget hal lain yang bikin aku makin bangga punya kamu.<br><br>
+            <strong>Love you so much ❤️✨</strong>
         </div>
     </div>
 
     <script>
+        const bgMusic = document.getElementById('bg-music');
+        let musicStarted = false;
+
+        function playMusic() {
+            if(!musicStarted) {
+                bgMusic.play().then(() => {
+                    musicStarted = true;
+                    document.getElementById('music-control').innerText = "🔊 Pause Music";
+                }).catch(err => {
+                    console.log("Autoplay blocked, user interaction needed");
+                });
+            }
+        }
+
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                document.getElementById('music-control').innerText = "🔊 Pause Music";
+            } else {
+                bgMusic.pause();
+                document.getElementById('music-control').innerText = "🎵 Play Music";
+            }
+        }
+
+        function startApp() {
+            playMusic();
+            nextStep('guard-screen');
+        }
+
         const listFotoKenangan = [
             { foto: "https://litter.catbox.moe/hu9jlvlwy9xtdpkz.jpg" },
             { foto: "https://litter.catbox.moe/ry416lhnjohw9i23.jpg" },
@@ -150,28 +192,20 @@
             { foto: "https://litter.catbox.moe/9otnfaop05wz9wzd.jpg" }
         ];
 
-        const listWishlist = [
-            { foto: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400" },
-            { foto: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400" },
-            { foto: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400" },
-            { foto: "https://images.unsplash.com/photo-1511632765406-a021bd1c42f2?w=400" }
-        ];
-
-        function initBook(containerId, listData, pageNumId) {
-            const book = document.getElementById(containerId);
+        function initBook() {
+            const book = document.getElementById('book-1');
             book.innerHTML = '';
-            listData.forEach((item, index) => {
+            listFotoKenangan.forEach((item, index) => {
                 const page = document.createElement('div');
                 page.className = 'page';
-                page.style.zIndex = listData.length - index;
+                page.style.zIndex = listFotoKenangan.length - index;
                 page.innerHTML = `<div class="polaroid"><img src="${item.foto}"></div>`;
                 book.appendChild(page);
             });
         }
-        initBook('book-1', listFotoKenangan, 'page-num-1');
-        initBook('book-2', listWishlist, 'page-num-2');
+        initBook();
 
-        let pagesState = [0, 0];
+        let currentPage = 0;
         
         function nextStep(id) {
             document.activeElement.parentElement.parentElement.style.opacity = '0';
@@ -184,12 +218,12 @@
         }
 
         function checkPin() {
+            playMusic();
             if(document.getElementById('pin-input').value === '16326') {
                 document.getElementById('guard-screen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('guard-screen').style.display = 'none';
                     document.getElementById('chat-container').style.display = 'flex';
-                    document.getElementById('bg-music').play();
                     runChat();
                 }, 500);
             } else { alert("PIN salah sayang!"); }
@@ -201,8 +235,11 @@
             wrapper.className = 'msg-wrapper';
             wrapper.innerHTML = `<div class="sender-name">${sender === 'girl' ? 'Cewe Cantik 👩' : 'Cowo Ganteng 👦'}</div><div class="bubble ${sender}">${text}</div>`;
             chat.appendChild(wrapper);
-            if(sender === 'girl') document.getElementById('sound-notif').play();
-            else document.getElementById('sound-typing').play();
+            if(sender === 'girl') {
+                try { document.getElementById('sound-notif').play(); } catch(e){}
+            } else {
+                try { document.getElementById('sound-typing').play(); } catch(e){}
+            }
             window.scrollTo(0, document.body.scrollHeight);
             return new Promise(r => setTimeout(r, 2000));
         }
@@ -246,37 +283,39 @@
             document.getElementById('book-container-1').style.display = 'flex';
         }
 
-        function nextPage(bookId, stateIndex) {
-            const bookContainer = document.getElementById(bookId);
+        function nextPage() {
+            const bookContainer = document.getElementById('book-1');
             const pages = bookContainer.querySelectorAll('.page');
-            const limit = stateIndex === 0 ? 8 : 4;
-            if (pagesState[stateIndex] < limit - 1) {
-                pages[pagesState[stateIndex]].classList.add('flipped');
-                pagesState[stateIndex]++;
-                document.getElementById(`page-num-${stateIndex+1}`).innerText = `${pagesState[stateIndex] + 1} / ${limit}`;
-                if(stateIndex === 0 && pagesState[0] === 7) document.getElementById('btn-final-1').style.display = 'block';
+            if (currentPage < listFotoKenangan.length - 1) {
+                pages[currentPage].classList.add('flipped');
+                currentPage++;
+                document.getElementById('page-num-1').innerText = `${currentPage + 1} / ${listFotoKenangan.length}`;
+                if(currentPage === listFotoKenangan.length - 1) {
+                    document.getElementById('btn-longtext-1').style.display = 'block';
+                }
             }
         }
 
-        function prevPage(bookId, stateIndex) {
-            const bookContainer = document.getElementById(bookId);
+        function prevPage() {
+            const bookContainer = document.getElementById('book-1');
             const pages = bookContainer.querySelectorAll('.page');
-            if (pagesState[stateIndex] > 0) {
-                pagesState[stateIndex]--;
-                pages[pagesState[stateIndex]].classList.remove('flipped');
-                const limit = stateIndex === 0 ? 8 : 4;
-                document.getElementById(`page-num-${stateIndex+1}`).innerText = `${pagesState[stateIndex] + 1} / ${limit}`;
+            if (currentPage > 0) {
+                currentPage--;
+                pages[currentPage].classList.remove('flipped');
+                document.getElementById('page-num-1').innerText = `${currentPage + 1} / ${listFotoKenangan.length}`;
             }
         }
 
-        function openFinalText() {
+        function openLongtext1() {
             document.getElementById('book-container-1').style.display = 'none';
-            document.getElementById('final-text-container').style.display = 'flex';
+            document.getElementById('longtext-container-1').style.display = 'flex';
+            window.scrollTo(0,0);
         }
 
-        function openWishlist() {
-            document.getElementById('final-text-container').style.display = 'none';
-            document.getElementById('book-container-2').style.display = 'flex';
+        function openLongtext2() {
+            document.getElementById('longtext-container-1').style.display = 'none';
+            document.getElementById('longtext-container-2').style.display = 'flex';
+            window.scrollTo(0,0);
         }
     </script>
 </body>
